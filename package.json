@@ -5,11 +5,6 @@
   "source": "index.js",
   "module": "./dist/web-gl-helpers.js",
   "scripts": {
-    "parcel-devel": "parcel --dist-dir=dist-devl ./public/index.html",
-    "parcel-prod-nooptimize": "parcel build --no-optimize --dist-dir=dist-prod ./public/index.html",
-    "parcel-prod-optimize": "parcel build --no-source-maps --dist-dir=dist-prod ./public/index.html",
-    "parcel-watch": "parcel watch --no-source-maps --dist-dir=dist-devl ./public/index.html",
-    "watch": "parcel watch",
     "build": "parcel build"
   },
   "repository": {

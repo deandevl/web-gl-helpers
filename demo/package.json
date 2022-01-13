@@ -1,0 +1,17 @@
+{
+  "name": "demo",
+  "version": "0.1.0",
+  "description": "A demonstration of the module library 'web-gl-helpers'",
+  "scripts": {
+    "devel": "parcel --dist-dir=demo-devl ./public/index.html",
+    "build": "parcel build --dist-dir=demo-prod ./public/index.html",
+    "watch": "parcel watch --dist-dir=demo-devl ./public/index.html"
+  },
+  "keywords": [],
+  "author": "Rick Dean",
+  "license": "MIT",
+  "dependencies": {
+    "gl-matrix": "^3.4.3",
+    "web-gl-helpers": "git+https://github.com/deandevl/web-gl-helpers.git"
+  }
+}
