@@ -1,0 +1,32 @@
+{
+  "name": "web-gl-helpers",
+  "version": "0.1.0",
+  "description": "Repository contains a collection of javascript classes and functions that assist in developing WebGL applications",
+  "source": "index.js",
+  "module": "./dist/web-gl-helpers.js",
+  "scripts": {
+    "parcel-devel": "parcel --dist-dir=dist-devl ./public/index.html",
+    "parcel-prod-nooptimize": "parcel build --no-optimize --dist-dir=dist-prod ./public/index.html",
+    "parcel-prod-optimize": "parcel build --no-source-maps --dist-dir=dist-prod ./public/index.html",
+    "parcel-watch": "parcel watch --no-source-maps --dist-dir=dist-devl ./public/index.html",
+    "watch": "parcel watch",
+    "build": "parcel build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deandevl/web-gl-helpers.git"
+  },
+  "keywords": [],
+  "author": "Rick Dean",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/deandevl/web-gl-helpers/issues"
+  },
+  "homepage": "https://github.com/deandevl/web-gl-helpers#readme",
+  "dependencies": {
+    "gl-matrix": "^3.4.3"
+  },
+  "devDependencies": {
+    "parcel": "^2.2.0"
+  }
+}
