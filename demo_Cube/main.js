@@ -6,13 +6,12 @@
 import {vertex_shader, fragment_shader} from "./shaders.js";
 import {AttributeClass} from "web-gl-helpers";
 import {UniformClass} from "web-gl-helpers";
+import {ElementClass} from "web-gl-helpers";
 import {resizeCanvasToDisplaySize} from "web-gl-helpers"
 import {createShader} from "web-gl-helpers";
 import {createGLcontext} from "web-gl-helpers";
 import {createProgram} from "web-gl-helpers";
 import {initializeContext} from "web-gl-helpers";
-
-import ElementClass from "./ElementClass.js";
 
 import {toRadian} from "gl-matrix/esm/common";
 
