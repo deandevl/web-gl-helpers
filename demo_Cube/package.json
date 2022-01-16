@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "description": "A demonstration of the module library 'web-gl-helpers'",
   "scripts": {
-    "devel": "parcel --dist-dir=demo-devl ./public/index.html",
-    "build": "parcel build --dist-dir=demo-prod ./public/index.html",
-    "watch": "parcel watch --dist-dir=demo-devl ./public/index.html"
+    "devel": "parcel ./index.html --dist-dir=devl",
+    "build": "parcel build ./index.html --dist-dir=prod",
+    "watch": "parcel watch ./index.html --dist-dir=devl"
   },
   "keywords": [],
   "author": "Rick Dean",
@@ -13,5 +13,8 @@
   "dependencies": {
     "gl-matrix": "^3.4.3",
     "web-gl-helpers": "git+https://github.com/deandevl/web-gl-helpers.git"
+  },
+  "devDependencies": {
+    "parcel": "^2.2.0"
   }
 }
