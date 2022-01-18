@@ -49,31 +49,46 @@ export default class Texture2DClass {
    * @param {number} unit Specifies which texture unit to make active.
    */
   setImage(url, unit){
-    try{
-      const texture = this.gl.createTexture();
-      this.gl.activeTexture(unit);
-      this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
-      // Fill the texture with a 1x1 colored pixel
-      this.gl.texImage2D(
-        this.gl.TEXTURE_2D,
-        0,
-        this.gl.RGBA,
-        1,
-        1,
-        0,
-        this.gl.RGBA,
-        this.gl.UNSIGNED_BYTE,
-        new Uint8Array([0, 0, 255, 255])
-      )
-      const image = new Image();
-      image.addEventListener('load', () => {
-        this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
-        this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, image);
-        this.gl.generateMipmap(this.gl.TEXTURE_2D);
-      });
-      image.src = url;
-    }catch(e){
-      throw new Error(`Texture2DClass fetch image error: ${e.message}`);
-    }
+    const texture = this.gl.createTexture();
+    this.gl.activeTexture(unit);
+    this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
+    // Fill the texture with a 1x1 colored pixel
+    this.gl.texImage2D(
+      this.gl.TEXTURE_2D, //target
+      0,                  //level
+      this.gl.RGBA,       //internal format
+      1,                  //width
+      1,                  //height
+      0,                  //border
+      this.gl.RGBA,       //format
+      this.gl.UNSIGNED_BYTE,    //type
+      new Uint8Array([0, 0, 255, 255])  //pixel source
+    )
+    const image = new Image();
+    const self = this;
+    image.addEventListener('load', function(){
+      // Now that the image is loaded copy it to the texture object
+      self.gl.bindTexture(self.gl.TEXTURE_2D, texture);
+      self.gl.texImage2D(
+        self.gl.TEXTURE_2D,    //target
+        0,                //level
+        self.gl.RGBA,          //internal format
+        self.gl.RGBA,          //format
+        self.gl.UNSIGNED_BYTE, //type
+        image             //source TexImageSource alias for HTML image element
+      );
+      self.gl.generateMipmap(self.gl.TEXTURE_2D);
+    });
+
+    fetch(url).then(response => {
+      if(!response.ok){
+        throw new Error('Texture2DClass: URL image response not ok');
+      }
+      return response.blob();
+    }).then(aBlob => {
+      image.src = URL.createObjectURL(aBlob);
+    }).catch(error => {
+      throw new Error(`Texture2DClass: There was an error: ${error}`);
+    })
   }
 }
