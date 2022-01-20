@@ -153,13 +153,10 @@ class $2ef498567da6e11d$export$2e2bcd8739ae039 {
     /**
    * Create a [WebGLTexture]{@link https://developer.mozilla.org/en-US/docs/Web/API/WebGLTexture} object.
    *   Activate and bind the texture then set it initially to a
-   *   blue color while the image is loaded.
-   * @param {string} url The file path to the image
-   * @param {number} unit Specifies which texture unit to make active.
-   */ setImage(url, unit) {
-        const texture = this.gl.createTexture();
-        this.gl.activeTexture(unit);
-        this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
+   *   blue color while the image is loaded. The function is async
+   *   and returns a javascript Promise.
+   * @param {string} url The file path to the image to be used as a texture
+   */ async loadTexture(url) {
         // Fill the texture with a 1x1 colored pixel
         this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, 1, 1, 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE, new Uint8Array([
             0,
@@ -168,23 +165,18 @@ class $2ef498567da6e11d$export$2e2bcd8739ae039 {
             255
         ]) //pixel source
         );
-        const image = new Image();
-        const self = this;
-        image.addEventListener('load', function() {
-            // Now that the image is loaded copy it to the texture object
-            self.gl.bindTexture(self.gl.TEXTURE_2D, texture);
-            self.gl.texImage2D(self.gl.TEXTURE_2D, 0, self.gl.RGBA, self.gl.RGBA, self.gl.UNSIGNED_BYTE, image //source TexImageSource alias for HTML image element
-            );
-            self.gl.generateMipmap(self.gl.TEXTURE_2D);
+        let response = await fetch(url);
+        let blob = await response.blob();
+        let image = await createImageBitmap(blob, {
+            imageOrientation: 'flipY'
         });
-        fetch(url).then((response)=>{
-            if (!response.ok) throw new Error('Texture2DClass: URL image response not ok');
-            return response.blob();
-        }).then((aBlob)=>{
-            image.src = URL.createObjectURL(aBlob);
-        }).catch((error)=>{
-            throw new Error(`Texture2DClass: There was an error: ${error}`);
-        });
+        const texture = this.gl.createTexture();
+        this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
+        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.REPEAT);
+        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.REPEAT);
+        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.NEAREST);
+        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.NEAREST);
+        this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, image);
     }
 }
 
