@@ -322,15 +322,15 @@ class $f27088d7fc79e3e7$export$2e2bcd8739ae039 {
     };
 }
 /** @function
- * Initialize the WebGLRenderingContext by clearing the canvas and giving by default a black background.
+ * Initialize the WebGLRenderingContext by clearing the canvas and giving by default a white background.
  *
  * @param {WebGLRenderingContext} gl The WebGLRenderingContext to be initialized.
  * @param {number[]} color_v4 A 4 element vector where the first three values are the RGB values for
  *   the canvas background. The fourth is the alpha value.
  */ function $30e336cde2eb38f0$export$881f7fb71351b304(gl, color_v4 = [
-    0,
-    0,
-    0,
+    255,
+    255,
+    255,
     1
 ]) {
     // Clear the canvas (red, gree, blue, alpha)

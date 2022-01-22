@@ -27,13 +27,13 @@ function createGLcontext(canvas_id, context_type='webgl2', options){
 }
 
 /** @function
- * Initialize the WebGLRenderingContext by clearing the canvas and giving by default a black background.
+ * Initialize the WebGLRenderingContext by clearing the canvas and giving by default a white background.
  *
  * @param {WebGLRenderingContext} gl The WebGLRenderingContext to be initialized.
  * @param {number[]} color_v4 A 4 element vector where the first three values are the RGB values for
  *   the canvas background. The fourth is the alpha value.
  */
-function initializeContext(gl, color_v4 = [0.0,0.0,0.0,1.0]){
+function initializeContext(gl, color_v4 = [255.0,255.0,255.0,1.0]){
   // Clear the canvas (red, gree, blue, alpha)
   gl.enable(gl.BLEND);
   gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
