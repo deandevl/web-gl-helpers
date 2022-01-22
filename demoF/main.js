@@ -103,7 +103,7 @@ try {
 
   // define a function for drawing the scene
   function drawScene(){
-    initializeContext(gl);
+    initializeContext(gl, [0.0, 0.0, 0.0, 1.0]); // black background
 
     // Compute the perspective matrix
     const perspective_m4 = TransformsClass.getPerspectiveMatrix(
