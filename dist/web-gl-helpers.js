@@ -1,5 +1,5 @@
 import {toRadian as $bdjGp$toRadian} from "gl-matrix/esm/common";
-import {create as $bdjGp$create, ortho as $bdjGp$ortho, perspective as $bdjGp$perspective, fromTranslation as $bdjGp$fromTranslation, fromXRotation as $bdjGp$fromXRotation, fromYRotation as $bdjGp$fromYRotation, fromZRotation as $bdjGp$fromZRotation, fromScaling as $bdjGp$fromScaling} from "gl-matrix/esm/mat4";
+import {create as $bdjGp$create, ortho as $bdjGp$ortho, perspective as $bdjGp$perspective, fromTranslation as $bdjGp$fromTranslation, fromRotation as $bdjGp$fromRotation, fromXRotation as $bdjGp$fromXRotation, fromYRotation as $bdjGp$fromYRotation, fromZRotation as $bdjGp$fromZRotation, fromScaling as $bdjGp$fromScaling} from "gl-matrix/esm/mat4";
 
 /**
  * Created by Rick on 2021-12-11.
@@ -188,59 +188,70 @@ class $2ef498567da6e11d$export$2e2bcd8739ae039 {
  */ 'use strict';
 class $85b93eff61a3c0d2$export$2e2bcd8739ae039 {
     /**
-   * Creates a 4x4 orthogonal projection matrix with the given bounds.
+   * Creates a flattened 4x4 orthogonal projection matrix with the given bounds.
    * @param {number} left
    * @param {number} right
    * @param {number} bottom
    * @param {number} top
    * @param {number} near
    * @param {number} far
-   * @returns {Float32Array} A 4x4 orthogonal projection matrix
+   * @returns {Float32Array} A flattened 4x4 orthogonal projection matrix
    */ static getOrthoMatrix(left, right, bottom, top, near, far) {
         const ortho_m4 = $bdjGp$create();
         $bdjGp$ortho(ortho_m4, left, right, bottom, top, near, far);
         return ortho_m4;
     }
     /**
-   * Creates a 4x4 perspective matrix
+   * Creates a flattened 4x4 perspective matrix
    * @param {number} fov Vertical field of view in degrees.
    * @param {number} aspect Aspect ratio. typically viewport width/height.
    * @param {number} zNear Near bound of the frustum.
    * @param {number}zFar Far bound of the frustum, can be null or Infinity.
-   * @returns {Float32Array} A 4x4 perspective matrix.
+   * @returns {Float32Array} A flattened 4x4 perspective matrix.
    */ static getPerspectiveMatrix(fov, aspect, zNear, zFar) {
         const perspective_m4 = $bdjGp$create();
         $bdjGp$perspective(perspective_m4, $bdjGp$toRadian(fov), aspect, zNear, zFar);
         return perspective_m4;
     }
     /**
-   * Creates a 4x4 translation matrix
-   * @param {Float32Array} translate_ar A 3 element float array of x, y, z translation.
-   * @returns {Float32Array} A 4x4 translation matrix.
-   */ static getTranslationMatrix(translate_ar) {
+   * Creates a 4x4 flattened translation matrix
+   * @param {Float32Array} translate_v A 3 element float array of x, y, z translation.
+   * @returns {Float32Array} A flattened 4x4 translation matrix.
+   */ static getTranslationMatrix(translate_v) {
         const translate_m4 = $bdjGp$create();
-        $bdjGp$fromTranslation(translate_m4, translate_ar);
+        $bdjGp$fromTranslation(translate_m4, translate_v);
         return translate_m4;
     }
     /**
-   * Creates a 4x4 rotation matrix for a specific axis
-   * @param {string} axis Axis of rotation "x", "Y", or "z".
-   * @param {number} rotation in degrees
-   * @returns {Float32Array} A 4x4 rotation matrix
-   */ static getXYZRotationMatrix(axis, rotation) {
+   * Creates a flattened 4x4 matrix from a given angle around a given axis.
+   * @param {number} rotation_deg The angle to rotate the matrix by
+   * @param {number[]} axis_v The three element vector that defines
+   *   the line of rotation from [0,0,0] to axis[dx,dy,dz].
+   * @returns {Float32Array} A flattened 4x4 rotation matrix
+   */ static getRotationMatrix(rotation_deg, axis_v) {
         const rotate_m4 = $bdjGp$create();
-        if (axis === 'x') $bdjGp$fromXRotation(rotate_m4, $bdjGp$toRadian(rotation));
-        else if (axis === 'y') $bdjGp$fromYRotation(rotate_m4, $bdjGp$toRadian(rotation));
-        else if (axis === 'z') $bdjGp$fromZRotation(rotate_m4, $bdjGp$toRadian(rotation));
+        $bdjGp$fromRotation(rotate_m4, $bdjGp$toRadian(rotation_deg), axis_v);
         return rotate_m4;
     }
     /**
-   * Creates a 4x4 scaling matrix
-   * @param {Float32Array} scale_ar A 3 element float array of x, y, z scaling.
-   * @returns {Float32Array} A 4x4 scale matrix
-   */ static getScaleMatrix(scale_ar) {
+   * Creates a flattened 4x4 rotation matrix for a specific axis.
+   * @param {string} axis Axis of rotation "x", "Y", or "z".
+   * @param {number} rotation_deg in degrees
+   * @returns {Float32Array} A flattened 4x4 rotation matrix
+   */ static getXYZRotationMatrix(axis, rotation_deg) {
+        const rotate_m4 = $bdjGp$create();
+        if (axis === 'x') $bdjGp$fromXRotation(rotate_m4, $bdjGp$toRadian(rotation_deg));
+        else if (axis === 'y') $bdjGp$fromYRotation(rotate_m4, $bdjGp$toRadian(rotation_deg));
+        else if (axis === 'z') $bdjGp$fromZRotation(rotate_m4, $bdjGp$toRadian(rotation_deg));
+        return rotate_m4;
+    }
+    /**
+   * Creates a flattened 4x4 scaling matrix
+   * @param {Float32Array} scale_v A 3 element float array of x, y, z scaling.
+   * @returns {Float32Array} A flattened 4x4 scale matrix
+   */ static getScaleMatrix(scale_v) {
         const scale_m4 = $bdjGp$create();
-        $bdjGp$fromScaling(scale_m4, scale_ar);
+        $bdjGp$fromScaling(scale_m4, scale_v);
         return scale_m4;
     }
 }
